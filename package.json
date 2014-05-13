@@ -1,6 +1,6 @@
 {
   "name": "hand-static",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "static file middleware, multiple binding ",
   "main": "hand-static.coffee",
   "scripts": {

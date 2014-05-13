@@ -7,6 +7,17 @@ describe 'hand-static', ()->
   statics = require '../hand-static'
   http = require 'http'
   
+  it 'should default setting  ', (done)-> 
+
+    server = http.createServer ho.make [
+#      ... something you need
+      statics()
+    ]
+    request server
+      .get '/c.txt'
+      .expect 200, 'c' 
+      .end done
+ 
     
   it 'should send txt ', (done)-> 
 

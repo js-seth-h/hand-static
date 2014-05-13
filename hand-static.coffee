@@ -46,11 +46,14 @@ statics = (option = {})->
     debug 'prefix setting :', fn.configure
 
 
+  hasPrefix = false
   for own prefix, dir of option
     if prefix[0] is '/'
       fn.setPrefix prefix, dir
+      hasPrefix = true
 
-  # fn.setPrefix '/', option.root
+  if hasPrefix is flase
+    fn.setPrefix '/', 'public' 
   return fn
 
 module.exports = exports = statics
