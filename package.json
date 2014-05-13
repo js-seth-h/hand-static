@@ -1,16 +1,18 @@
 {
   "name": "hand-static",
   "version": "0.0.0",
-  "description": "> At the end of call chain, it send 404 or 500(when error exists).\r > responsed html is customizable.\r > written by coffeescript",
+  "description": "static file middleware, multiple binding ",
   "main": "hand-static.coffee",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "set TEST=true && mocha --compilers coffee:coffee-script/register   --reporter spec",
+    "start": "set TEST=true && set DEBUG=hand* && mocha --compilers coffee:coffee-script/register   --reporter spec"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/js-seth-h/hand-static.git"
   },
   "keywords": [
+    "middleware",
     "static",
     "multiple"
   ],
@@ -19,5 +21,13 @@
   "bugs": {
     "url": "https://github.com/js-seth-h/hand-static/issues"
   },
-  "homepage": "https://github.com/js-seth-h/hand-static"
+  "homepage": "https://github.com/js-seth-h/hand-static",
+  "devDependencies": {
+    "debug": "^0.8.1",
+    "handover": "^0.2.2",
+    "supertest": "^0.12.1"
+  },
+  "dependencies": {
+    "send": "^0.3.0"
+  }
 }
