@@ -5,10 +5,7 @@ url = require 'url'
 debug = require('debug')("hand:static")
 
 
-statics = (option = {})->
-  # option.root = option.root || './public'
-
-
+statics = (option = {})->  
   fn = (req, res, next)->  
     address = url.parse(req.url)
     pathname = address.pathname
