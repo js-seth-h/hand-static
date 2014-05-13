@@ -1,87 +1,109 @@
-# hand-leftover
+# hand-static
 
-> At the end of call chain, it send 404 or 500(when error exists).
+
+> static with prefix, multiple directory binding
 > responsed html is customizable.
 > written by coffeescript
 
 ## Features
 
-* developer takes permission to control 404 / 500 response
-* prevent `no answer` from http server 
+* static with [send][send] 
 * compatible with connect
+* multiplexing by prfix , example...
+ * http://localhost/a.tx -> public/a.txt
+ * http://localhost/module_a/b.txt -> module_a/public/b.txt
+
+[send]: https://www.npmjs.org/package/send
 
 
-# Why made this?
+## Important - Multiplexing Order
 
-[handover][ho] is fully compatible with connect's middleware.
-So, first my attempt is using [errorhandler][eh].
-but, in [errorhandler][eh] , 404(page not found) is also `Error` ( it means I have to throw `new Error '...'`)
 
-[ho]: https://www.npmjs.org/package/handover
-[eh]: https://www.npmjs.org/package/errorhandler
+**long prefix matching first, short later.**
 
-My opinion about 404 is differnt.
-`Page not found` is naturally occured when all middleware didn't process request.
 
-I need more flexible one.
+In `hand-static`, sort multiplexing rule by prefix. 
+
+Sequence of call `.setPrefix` is ignored.
+
+
+
+
 
 
 ## Example
-
- ```coffee 
+```coffee 
 
     server = http.createServer ho.make [
 #      ... something you need
-      leftover()
+      statics()
     ]
+
+ ```
+if no options, sub dir `public` is take all request.
+it means...
+  http://localhost/a.txt    -> ./public/a.txt
+  http://localhost/dir/a.txt    -> ./public/dir/a.txt
+
+```coffee 
+
+    server = http.createServer ho.make [
+#      ... something you need
+      statics
+        '/': 'test/public'
+    ]
+#or 
+
  
+    server = http.createServer ho.make [
+#      ... something you need
+      statics
+        '/': 'test/public' 
+        '/2': 'test/public2' 
+    ]
 
  ```
-basic usages.
+ prefix '/'  goto  dir `test/public`
+ prefix '/2'  goto  dir `test/public2`
+
+
 
  ```coffee 
-
+ 
+    s = statics
+        '/': 'test/public' 
     server = http.createServer ho.make [
 #      ... something you need
-      leftover
-        '404':
-          html: "<h1> Page Not Found </h1>"
+      s
     ]
+    s.setPrefix '/2', 'test/public2'
 
  ```
-static html text is possible.
+you can setPrefix later.
+  
+## License
 
+(The MIT License)
 
- ```coffee  
+Copyright (c) 2014 junsik &lt;js@seth.h@google.com&gt;
 
-    server = http.createServer ho.make [
-#      ... something you need
-      leftover
-        '404' :
-          html: (callback)-> callback 'callback'
-    ]
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
 
- ```
-function is possible too.
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
 
-```coffee
-    server = http.createServer ho.make [
-      (req,res,next)-> next new Error 'Just Error' 
-      leftover
-        '500' :
-          html: '500'
-    ] 
-# or 
-    server = http.createServer ho.make [
-      (req,res,next)-> next new Error 'Just Error' 
-      leftover
-        '500' :
-          html: (error, callback)-> callback error.toString()
-    ]
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-```
-
-with error handler, it is also possible using text or function.
-
-
-
+ 

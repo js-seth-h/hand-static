@@ -6,7 +6,8 @@ debug = require('debug')("hand:static")
 
 
 statics = (option = {})->
-  option.root = option.root || './public'
+  # option.root = option.root || './public'
+
 
   fn = (req, res, next)->  
     address = url.parse(req.url)
@@ -44,7 +45,12 @@ statics = (option = {})->
       return 1
     debug 'prefix setting :', fn.configure
 
-  fn.setPrefix '/', option.root
+
+  for own prefix, dir of option
+    if prefix[0] is '/'
+      fn.setPrefix prefix, dir
+
+  # fn.setPrefix '/', option.root
   return fn
 
 module.exports = exports = statics
