@@ -52,7 +52,7 @@ statics = (option = {})->
       fn.setPrefix prefix, dir
       hasPrefix = true
 
-  if hasPrefix is flase
+  if hasPrefix is false
     fn.setPrefix '/', 'public' 
   return fn
 
