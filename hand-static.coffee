@@ -33,6 +33,13 @@ statics = (option = {})->
 
   fn.configure = []
   fn.setPrefix = (prefix, root)->
+
+    if typeof prefix is 'object'
+      debug 'accept prefix object', prefix
+      for own k, v of prefix
+        debug 'setPrefix',  k, v
+        fn.setPrefix k, v
+      return  
     fn.configure.push([prefix, root ])
     # debug 'configure = ', fn.configure
     fn.configure.sort (a, b)-> 
@@ -43,14 +50,14 @@ statics = (option = {})->
     debug 'prefix setting :', fn.configure
 
 
-  hasPrefix = false
+  # hasPrefix = false
   for own prefix, dir of option
     if prefix[0] is '/'
       fn.setPrefix prefix, dir
       hasPrefix = true
 
-  if hasPrefix is false
-    fn.setPrefix '/', 'public' 
+  # if hasPrefix is false
+  #   fn.setPrefix '/', 'public' 
   return fn
 
 module.exports = exports = statics

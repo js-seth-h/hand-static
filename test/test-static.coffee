@@ -7,16 +7,16 @@ describe 'hand-static', ()->
   statics = require '../hand-static'
   http = require 'http'
   
-  it 'should default setting  ', (done)-> 
+#   it 'should default setting  ', (done)-> 
 
-    server = http.createServer ho.make [
-#      ... something you need
-      statics()
-    ]
-    request server
-      .get '/c.txt'
-      .expect 200, 'c' 
-      .end done
+#     server = http.createServer ho.make [
+# #      ... something you need
+#       statics()
+#     ]
+#     request server
+#       .get '/c.txt'
+#       .expect 200, 'c' 
+#       .end done
  
     
   it 'should send txt ', (done)-> 
@@ -63,3 +63,24 @@ describe 'hand-static', ()->
       .expect 200, 'b' 
       .end done
  
+
+  it 'should accept mapping object ', (done)-> 
+
+    s = statics()
+        # '/': 'test/public' 
+    server = http.createServer ho.make [
+#      ... something you need
+      s
+    ]
+    # s.setPrefix '/2', 'test/public2'
+    s.setPrefix 
+      "/2": 'test/public2'
+      '/': 'test/public' 
+    # request server
+    #   .get '/2/b.txt'
+    #   .expect 200, 'b'
+    #   .end done
+    request server
+      .get '/a.txt'
+      .expect 200, 'a' 
+      .end done

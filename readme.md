@@ -31,19 +31,7 @@ Sequence of call `.setPrefix` is ignored.
 
 
 
-## Example
-```coffee 
-
-    server = http.createServer ho.make [
-#      ... something you need
-      statics()
-    ]
-
- ```
-if no options, sub dir `public` is take all request.
-it means...
-  http://localhost/a.txt    -> ./public/a.txt
-  http://localhost/dir/a.txt    -> ./public/dir/a.txt
+## Example 
 
 ```coffee 
 
@@ -81,6 +69,20 @@ it means...
  ```
 you can setPrefix later.
   
+ ```coffee 
+ 
+    s = statics
+        '/': 'test/public' 
+    server = http.createServer ho.make [
+#      ... something you need
+      s
+    ]
+    s.setPrefix
+      "/2": 'test/public2'
+      '/': 'test/public' 
+
+ ```
+you can setPrefix accept object
 ## License
 
 (The MIT License)
