@@ -33,13 +33,15 @@ statics = (option = {})->
     actualPath = path.join root, pathname
 
     debug 'actualPath' , actualPath 
-    fs.stat actualPath, (err, stats)->
-      return next(err)  if err
-      if stats.isFile()
-        debug 'static send', req.url, '->', root, pathname
-        send(req, pathname)
-          .root(root) 
-          .pipe(res)
+    fs.exists actualPath, (exists)->
+      return next() unless exists   
+      fs.stat actualPath, (err, stats)->
+        return next(err)  if err
+        if stats.isFile()
+          debug 'static send', req.url, '->', root, pathname
+          send(req, pathname)
+            .root(root) 
+            .pipe(res)
 
   fn.configure = []
   fn.setPrefix = (prefix, root)->
