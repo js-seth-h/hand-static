@@ -18,6 +18,19 @@ describe 'hand-static', ()->
 #       .expect 200, 'c' 
 #       .end done
  
+  it 'should pass request', (done)-> 
+
+    server = http.createServer ho.make [
+#      ... something you need
+      statics()
+      (req,res)->
+        res.statusCode = 404
+        res.end 'pass'
+    ]
+    request server
+      .get '/a.txt'
+      .expect 404 , 'pass'
+      .end done
     
   it 'should send txt ', (done)-> 
 

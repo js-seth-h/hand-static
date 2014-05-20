@@ -25,6 +25,7 @@ statics = (option = {})->
         # debug "statics prefix ='#{in_prefix}' path='#{pathname}'" 
         break
 
+    return next() unless root
     # log 'send', pathname, root
     debug 'static send', req.url, '->', root, pathname
     send(req, pathname)
