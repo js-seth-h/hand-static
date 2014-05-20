@@ -3,7 +3,8 @@
 send = require 'send'
 url = require 'url'
 debug = require('debug')("hand:static")
-
+path = require 'path'
+fs = require 'fs'
 
 statics = (option = {})->  
   fn = (req, res, next)->  
@@ -25,12 +26,20 @@ statics = (option = {})->
         # debug "statics prefix ='#{in_prefix}' path='#{pathname}'" 
         break
 
+    debug 'root = ',root
     return next() unless root
     # log 'send', pathname, root
-    debug 'static send', req.url, '->', root, pathname
-    send(req, pathname)
-      .root(root) 
-      .pipe(res)
+
+    actualPath = path.join root, pathname
+
+    debug 'actualPath' , actualPath 
+    fs.stat actualPath, (err, stats)->
+      return next(err)  if err
+      if stats.isFile()
+        debug 'static send', req.url, '->', root, pathname
+        send(req, pathname)
+          .root(root) 
+          .pipe(res)
 
   fn.configure = []
   fn.setPrefix = (prefix, root)->
