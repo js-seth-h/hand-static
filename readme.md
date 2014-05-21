@@ -83,6 +83,22 @@ you can setPrefix later.
 
  ```
 you can setPrefix accept object
+
+```coffee 
+ 
+    s = statics
+        '/': 'test/public' 
+        index : 'default.html'  # default of index  is `index.html`
+    server = http.createServer ho.make [
+#      ... something you need
+      s
+    ]
+    s.setPrefix
+      "/2": 'test/public2'
+      '/': 'test/public' 
+
+ ```
+you can setPrefix accept object
 ## License
 
 (The MIT License)

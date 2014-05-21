@@ -97,3 +97,37 @@ describe 'hand-static', ()->
       .get '/a.txt'
       .expect 200, 'a' 
       .end done
+
+
+  it 'should send index.html', (done)-> 
+
+    server = http.createServer ho.make [
+#      ... something you need
+      statics
+        '/': 'test/public' 
+      (req,res)->
+        res.statusCode = 404
+        res.end 'pass'
+    ]
+    request server
+      .get '/'
+      .expect 200, 'HELLOW INDEX.HTML'
+      .end done
+
+
+  it 'should send change index', (done)-> 
+
+    server = http.createServer ho.make [
+#      ... something you need
+      statics
+        index: 'a.txt'
+        '/': 'test/public' 
+      (req,res)->
+        res.statusCode = 404
+        res.end 'pass'
+    ]
+    request server
+      .get '/'
+      .expect 200, 'a'
+      .end done
+

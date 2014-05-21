@@ -6,7 +6,9 @@ debug = require('debug')("hand:static")
 path = require 'path'
 fs = require 'fs'
 
-statics = (option = {})->  
+statics = (option = {})-> 
+  option.index = option.index || 'index.html'
+
   fn = (req, res, next)->  
     address = url.parse(req.url)
     pathname = address.pathname
@@ -23,7 +25,7 @@ statics = (option = {})->
         continue
       else              
         pathname = in_path
-        # debug "statics prefix ='#{in_prefix}' path='#{pathname}'" 
+        debug "statics prefix ='#{in_prefix}' path='#{pathname}'" 
         break
 
     debug 'root = ',root
@@ -35,15 +37,26 @@ statics = (option = {})->
     debug 'actualPath' , actualPath 
     fs.exists actualPath, (exists)->
       return next() unless exists   
-      fs.stat actualPath, (err, stats)->
-        return next(err)  if err
-        if stats.isFile()
-          debug 'static send', req.url, '->', root, pathname
-          send(req, pathname)
-            .root(root) 
-            .pipe(res)
+      fn.sendFile req, res, actualPath, next
+
 
   fn.configure = []
+  fn.sendFile = (req, res, actualPath, next)->
+    debug 'send path ', actualPath
+    fs.stat actualPath, (err, stats)->
+      # debug 'stats ', actualPath, err, stats
+      return next(err)  if err        
+      debug 'isFile = ', stats.isFile()
+      if stats.isFile()
+        debug 'static send', req.url, '<-', actualPath
+        send(req, actualPath).pipe(res)
+      else 
+        indexPath = path.join actualPath, option.index
+        fs.exists indexPath, (exists)->
+          return next() unless exists
+          fn.sendFile req, res, indexPath, next
+
+
   fn.setPrefix = (prefix, root)->
 
     if typeof prefix is 'object'
@@ -66,7 +79,7 @@ statics = (option = {})->
   for own prefix, dir of option
     if prefix[0] is '/'
       fn.setPrefix prefix, dir
-      hasPrefix = true
+      # hasPrefix = true
 
   # if hasPrefix is false
   #   fn.setPrefix '/', 'public' 
