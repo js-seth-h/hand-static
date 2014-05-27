@@ -1,5 +1,3 @@
-
-
 send = require 'send'
 url = require 'url'
 debug = require('debug')("hand:static")
@@ -7,7 +5,7 @@ path = require 'path'
 fs = require 'fs'
 
 statics = (option = {})-> 
-  option.index = option.index || 'index.html'
+  option.index = option.index || undefined # 'index.html'
 
   fn = (req, res, next)->  
     address = url.parse(req.url)
@@ -50,12 +48,13 @@ statics = (option = {})->
       if stats.isFile()
         debug 'static send', req.url, '<-', actualPath
         send(req, actualPath).pipe(res)
-      else 
+      else if option.index
         indexPath = path.join actualPath, option.index
         fs.exists indexPath, (exists)->
           return next() unless exists
           fn.sendFile req, res, indexPath, next
-
+      else
+        next()
 
   fn.setPrefix = (prefix, root)->
 
