@@ -1,12 +1,13 @@
 send = require 'send'
 url = require 'url'
-debug = require('debug')("hand:static")
+debug = require('debug')("httpware-static")
 path = require 'path'
 fs = require 'fs'
 
 statics = (option = {})-> 
   option.index = option.index || undefined # 'index.html'
 
+  debug 'create with ', option
   fn = (req, res, next)->  
     address = url.parse(req.url)
     pathname = address.pathname

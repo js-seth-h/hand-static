@@ -1,4 +1,4 @@
-# hand-static
+# httpware-static
 
 
 > static with prefix, multiple directory binding
@@ -22,7 +22,7 @@
 **long prefix matching first, short later.**
 
 
-In `hand-static`, sort multiplexing rule by prefix. 
+In `httpware-static`, sort multiplexing rule by prefix. 
 
 Sequence of call `.setPrefix` is ignored.
 

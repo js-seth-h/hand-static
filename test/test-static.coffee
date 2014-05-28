@@ -4,7 +4,7 @@ request = require 'supertest'
 describe 'hand-static', ()->
 
   ho = require 'handover'
-  statics = require '../hand-static'
+  statics = require '../src'
   http = require 'http'
   
 #   it 'should default setting  ', (done)-> 
@@ -104,6 +104,7 @@ describe 'hand-static', ()->
     server = http.createServer ho.make [
 #      ... something you need
       statics
+        index: 'index.html'
         '/': 'test/public' 
       (req,res)->
         res.statusCode = 404

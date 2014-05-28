@@ -1,11 +1,13 @@
 {
-  "name": "hand-static",
-  "version": "0.2.8",
+  "name": "httpware-static",
+  "version": "0.3.0",
   "description": "static file middleware, multiple binding ",
-  "main": "hand-static.coffee",
+  "main": "lib",
   "scripts": {
     "test": "set TEST=true && mocha --compilers coffee:coffee-script/register   --reporter spec",
-    "start": "set TEST=true && set DEBUG=hand* && mocha --compilers coffee:coffee-script/register   --reporter spec"
+    "build": "coffee -c -b -o lib src  ",
+    "prepublish": "npm run-script build",
+    "postpublish": "rm -r lib"
   },
   "repository": {
     "type": "git",
@@ -23,11 +25,11 @@
   },
   "homepage": "https://github.com/js-seth-h/hand-static",
   "devDependencies": {
-    "debug": "^0.8.1",
     "handover": "^0.2.2",
     "supertest": "^0.12.1"
   },
   "dependencies": {
+    "debug": "^0.8.1",
     "send": "^0.3.0"
   }
 }
