@@ -35,7 +35,7 @@ Sequence of call `.setPrefix` is ignored.
 
 ```coffee 
 
-    server = http.createServer ho.make [
+    server = http.createServer flyway [
 #      ... something you need
       statics
         '/': 'test/public'
@@ -43,7 +43,7 @@ Sequence of call `.setPrefix` is ignored.
 #or 
 
  
-    server = http.createServer ho.make [
+    server = http.createServer flyway [
 #      ... something you need
       statics
         '/': 'test/public' 
@@ -60,7 +60,7 @@ Sequence of call `.setPrefix` is ignored.
  
     s = statics
         '/': 'test/public' 
-    server = http.createServer ho.make [
+    server = http.createServer flyway [
 #      ... something you need
       s
     ]
@@ -73,7 +73,7 @@ you can setPrefix later.
  
     s = statics
         '/': 'test/public' 
-    server = http.createServer ho.make [
+    server = http.createServer flyway [
 #      ... something you need
       s
     ]
@@ -89,7 +89,7 @@ you can setPrefix accept object
     s = statics
         '/': 'test/public' 
         index : 'default.html'  # default of index  is `index.html`
-    server = http.createServer ho.make [
+    server = http.createServer flyway [
 #      ... something you need
       s
     ]
