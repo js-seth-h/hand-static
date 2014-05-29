@@ -1,13 +1,14 @@
 {
   "name": "httpware-static",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "static file middleware, multiple binding ",
   "main": "lib",
   "scripts": {
-    "test": "set TEST=true && mocha --compilers coffee:coffee-script/register   --reporter spec",
     "build": "coffee -c -b -o lib src  ",
+    "clean": "rm -r lib",
     "prepublish": "npm run-script build",
-    "postpublish": "rm -r lib"
+    "postpublish": "npm run-script clean",
+    "test": "set TEST=true && mocha --compilers coffee:coffee-script/register   --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,7 @@
   },
   "homepage": "https://github.com/js-seth-h/hand-static",
   "devDependencies": {
-    "handover": "^0.2.2",
+    "flyway": "0.1.0-1",
     "supertest": "^0.12.1"
   },
   "dependencies": {

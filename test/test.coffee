@@ -3,13 +3,13 @@ request = require 'supertest'
 
 describe 'hand-static', ()->
 
-  ho = require 'handover'
+  flyway = require 'flyway'
   statics = require '../src'
   http = require 'http'
   
 #   it 'should default setting  ', (done)-> 
 
-#     server = http.createServer ho.make [
+#     server = http.createServer flyway [
 # #      ... something you need
 #       statics()
 #     ]
@@ -20,7 +20,7 @@ describe 'hand-static', ()->
  
   it 'should pass request', (done)-> 
 
-    server = http.createServer ho.make [
+    server = http.createServer flyway [
 #      ... something you need
       statics()
       (req,res)->
@@ -34,7 +34,7 @@ describe 'hand-static', ()->
     
   it 'should send txt ', (done)-> 
 
-    server = http.createServer ho.make [
+    server = http.createServer flyway [
 #      ... something you need
       statics
         '/': 'test/public'
@@ -49,7 +49,7 @@ describe 'hand-static', ()->
 
     s = statics
         '/': 'test/public' 
-    server = http.createServer ho.make [
+    server = http.createServer flyway [
 #      ... something you need
       s
     ]
@@ -64,7 +64,7 @@ describe 'hand-static', ()->
 
   it 'should accept options key start with "/" ', (done)-> 
  
-    server = http.createServer ho.make [
+    server = http.createServer flyway [
 #      ... something you need
       statics
         '/': 'test/public' 
@@ -81,7 +81,7 @@ describe 'hand-static', ()->
 
     s = statics()
         # '/': 'test/public' 
-    server = http.createServer ho.make [
+    server = http.createServer flyway [
 #      ... something you need
       s
     ]
@@ -101,7 +101,7 @@ describe 'hand-static', ()->
 
   it 'should send index.html', (done)-> 
 
-    server = http.createServer ho.make [
+    server = http.createServer flyway [
 #      ... something you need
       statics
         index: 'index.html'
@@ -118,7 +118,7 @@ describe 'hand-static', ()->
 
   it 'should send change index', (done)-> 
 
-    server = http.createServer ho.make [
+    server = http.createServer flyway [
 #      ... something you need
       statics
         index: 'a.txt'
