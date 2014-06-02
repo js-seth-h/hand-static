@@ -32,6 +32,21 @@ describe 'hand-static', ()->
       .expect 404 , 'pass'
       .end done
     
+  it 'should pass request', (done)-> 
+
+    server = http.createServer flyway [
+#      ... something you need
+      statics
+        '/unmatched': 'test/public'
+      (req,res)->
+        res.statusCode = 404
+        res.end 'pass'
+    ]
+    request server
+      .get '/a.txt'
+      .expect 404 , 'pass'
+      .end done
+    
   it 'should send txt ', (done)-> 
 
     server = http.createServer flyway [

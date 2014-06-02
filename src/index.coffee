@@ -14,16 +14,13 @@ statics = (option = {})->
 
     # debug "statics", pathname 
     for conf in fn.configure
-      [prefix, root] = conf
+      [prefix, mappedDir] = conf
 
       in_prefix = address.pathname[..prefix.length - 1]
       in_path = address.pathname[prefix.length..]  
-
-
-      if in_prefix isnt prefix
-        continue
-      else              
+      if in_prefix is prefix
         pathname = in_path
+        root = mappedDir
         debug "statics prefix ='#{in_prefix}' path='#{pathname}'" 
         break
 
