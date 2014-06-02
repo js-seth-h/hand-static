@@ -30,32 +30,38 @@ statics = (option = {})->
     debug 'root = ',root
     return next() unless root
     # log 'send', pathname, root
+ 
 
-    actualPath = path.join root, pathname
-
-    debug 'actualPath' , actualPath 
-    # fs.exists actualPath, (exists)->
-      # return next() unless exists   
-    fn.sendFile req, res, actualPath, next
-
+    mappedPath = path.join root, pathname
+    fn.getRealPath mappedPath, (err, realPath)->
+      debug 'getRealPath', mappedPath, '->', realPath
+      return next err if err
+      if realPath is undefined
+        err = new Error 'File not found'
+        err.status = 404
+        return next err
+      send(req, realPath)
+        .on 'error', next
+        .pipe res
 
   fn.configure = []
-  fn.sendFile = (req, res, actualPath, next)->
-    debug 'send path ', actualPath
-    fs.stat actualPath, (err, stats)->
-      # debug 'stats ', actualPath, err, stats
-      return next(err)  if err        
-      debug 'isFile = ', stats.isFile()
-      if stats.isFile()
-        debug 'static send', req.url, '<-', actualPath
-        send(req, actualPath).pipe(res)
-      else if option.index
-        indexPath = path.join actualPath, option.index
+
+  fn.getRealPath = (mappedPath, callback)->
+    fs.exists mappedPath, (exists)->
+      return callback(null, undefined) unless exists
+      fs.stat mappedPath, (err, stats)->
+        return callback err if err
+        return callback(null, mappedPath) if stats.isFile()
+        return callback null, undefined unless option.index
+        indexPath = path.join mappedPath, option.index
+        debug 'search index file', indexPath
         fs.exists indexPath, (exists)->
-          return next() unless exists
-          fn.sendFile req, res, indexPath, next
-      else
-        next()
+          return callback null, undefined unless exists
+          fs.stat indexPath, (err, stats)->
+            return callback err if err
+            return callback(err, indexPath) if stats.isFile()
+            return callback null, undefined
+ 
 
   fn.setPrefix = (prefix, root)->
 
