@@ -21,12 +21,7 @@
 
 **long prefix matching first, short later.**
 
-
 In `httpware-static`, sort multiplexing rule by prefix. 
-
-Sequence of call `.setPrefix` is ignored.
-
-
 
 
 

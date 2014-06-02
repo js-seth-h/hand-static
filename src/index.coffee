@@ -34,9 +34,9 @@ statics = (option = {})->
     actualPath = path.join root, pathname
 
     debug 'actualPath' , actualPath 
-    fs.exists actualPath, (exists)->
-      return next() unless exists   
-      fn.sendFile req, res, actualPath, next
+    # fs.exists actualPath, (exists)->
+      # return next() unless exists   
+    fn.sendFile req, res, actualPath, next
 
 
   fn.configure = []
