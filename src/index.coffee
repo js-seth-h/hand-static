@@ -6,6 +6,7 @@ fs = require 'fs'
 
 statics = (option = {})-> 
   option.index = option.index || undefined # 'index.html'
+  option.jsonFile = option.jsonFile || undefined # 'index.html'
 
   debug 'create with ', option
   fn = (req, res, next)->  
@@ -86,6 +87,21 @@ statics = (option = {})->
 
   # if hasPrefix is false
   #   fn.setPrefix '/', 'public' 
+
+  fn.loadJsonFile = ()->
+    fs.readFile option.jsonFile, (err, data)->
+      data = JSON.parse data
+      fn.configure = []
+      for own key, val of data
+        fn.setPrefix key, val
+   
+
+  if option.jsonFile
+    fn.loadJsonFile()
+    fs.watchFile option.jsonFile, (err)->
+      fn.loadJsonFile()
+
+
   return fn
 
 module.exports = exports = statics

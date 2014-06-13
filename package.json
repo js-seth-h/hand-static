@@ -1,6 +1,6 @@
 {
   "name": "httpware-static",
-  "version": "0.3.3-1",
+  "version": "0.3.4",
   "description": "static file middleware, multiple binding ",
   "main": "lib",
   "scripts": {
@@ -25,8 +25,8 @@
     "url": "https://github.com/js-seth-h/hand-static/issues"
   },
   "homepage": "https://github.com/js-seth-h/hand-static",
-  "devDependencies": {
-    "flyway": "0.1.0-1",
+  "devDependencies": { 
+    "ficent": "^0.1.10-1",
     "supertest": "^0.12.1"
   },
   "dependencies": {

@@ -3,13 +3,13 @@ request = require 'supertest'
 
 describe 'hand-static', ()->
 
-  flyway = require 'flyway'
+  ficent = require 'ficent'
   statics = require '../src'
   http = require 'http'
   
 #   it 'should default setting  ', (done)-> 
 
-#     server = http.createServer flyway [
+#     server = http.createServer ficent [
 # #      ... something you need
 #       statics()
 #     ]
@@ -20,7 +20,7 @@ describe 'hand-static', ()->
  
   it 'should pass request', (done)-> 
 
-    server = http.createServer flyway [
+    server = http.createServer ficent [
 #      ... something you need
       statics()
       (req,res)->
@@ -34,7 +34,7 @@ describe 'hand-static', ()->
     
   it 'should pass request', (done)-> 
 
-    server = http.createServer flyway [
+    server = http.createServer ficent [
 #      ... something you need
       statics
         '/unmatched': 'test/public'
@@ -49,7 +49,7 @@ describe 'hand-static', ()->
     
   it 'should send txt ', (done)-> 
 
-    server = http.createServer flyway [
+    server = http.createServer ficent [
 #      ... something you need
       statics
         '/': 'test/public'
@@ -64,7 +64,7 @@ describe 'hand-static', ()->
 
     s = statics
         '/': 'test/public' 
-    server = http.createServer flyway [
+    server = http.createServer ficent [
 #      ... something you need
       s
     ]
@@ -79,7 +79,7 @@ describe 'hand-static', ()->
 
   it 'should accept options key start with "/" ', (done)-> 
  
-    server = http.createServer flyway [
+    server = http.createServer ficent [
 #      ... something you need
       statics
         '/': 'test/public' 
@@ -96,7 +96,7 @@ describe 'hand-static', ()->
 
     s = statics()
         # '/': 'test/public' 
-    server = http.createServer flyway [
+    server = http.createServer ficent [
 #      ... something you need
       s
     ]
@@ -116,7 +116,7 @@ describe 'hand-static', ()->
 
   it 'should send index.html', (done)-> 
 
-    server = http.createServer flyway [
+    server = http.createServer ficent [
 #      ... something you need
       statics
         index: 'index.html'
@@ -133,7 +133,7 @@ describe 'hand-static', ()->
 
   it 'should send change index', (done)-> 
 
-    server = http.createServer flyway [
+    server = http.createServer ficent [
 #      ... something you need
       statics
         index: 'a.txt'
@@ -147,3 +147,22 @@ describe 'hand-static', ()->
       .expect 200, 'a'
       .end done
 
+
+  it 'read jsonFile', (done)-> 
+
+    server = http.createServer ficent [
+#      ... something you need
+      statics
+        jsonFile: './static-prefix.json'
+      (req,res)->
+        res.statusCode = 404
+        res.end 'pass'
+    ]
+    doTest = ()->
+      request server
+        .get '/test/a.txt'
+        .expect 200, 'a'
+        .end done
+
+
+    setTimeout doTest, 500
