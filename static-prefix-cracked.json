@@ -1,0 +1,6 @@
+{
+  "/_layout/": "client\\layout\\public",
+  "/index-page": "client\\index-page\\public",
+  "/_login": "client\\login\\public",
+  "/_map": "client\\map\\public",
+  "/_user": "client\\user\\public", 

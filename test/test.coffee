@@ -166,3 +166,41 @@ describe 'hand-static', ()->
 
 
     setTimeout doTest, 500
+
+  it 'read jsonFile (not exist)', (done)-> 
+
+    server = http.createServer ficent [
+#      ... something you need
+      statics
+        jsonFile: './static-prefix-2.json'
+      (req,res)->
+        res.statusCode = 404
+        res.end 'pass'
+    ]
+    doTest = ()->
+      request server
+        .get '/test/a.txt'
+        .expect 404
+        .end done
+
+
+    setTimeout doTest, 500
+
+  it 'read jsonFile (cracked)', (done)-> 
+
+    server = http.createServer ficent [
+#      ... something you need
+      statics
+        jsonFile: './static-prefix-cracked.json'
+      (req,res)->
+        res.statusCode = 404
+        res.end 'pass'
+    ]
+    doTest = ()->
+      request server
+        .get '/test/a.txt'
+        .expect 404
+        .end done
+
+
+    setTimeout doTest, 500

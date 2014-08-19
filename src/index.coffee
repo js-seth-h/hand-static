@@ -90,11 +90,19 @@ statics = (option = {})->
 
   fn.loadJsonFile = ()->
     fs.readFile option.jsonFile, (err, data)->
-      data = JSON.parse data
-      fn.configure = []
-      for own key, val of data
-        fn.setPrefix key, val
-   
+      # throw err if err
+      return if err 
+      try 
+        data = JSON.parse data
+        fn.configure = []            
+        for own key, val of data
+          fn.setPrefix key, val
+        for own prefix, dir of option
+          if prefix[0] is '/'
+            fn.setPrefix prefix, dir
+      catch
+        debug "statics : jsonFile(#{option.jsonFile}) is cracked"
+        return  
 
   if option.jsonFile
     fn.loadJsonFile()
